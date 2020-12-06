@@ -10,7 +10,11 @@ const filterCssObject = (css, p = "") => {
         ob[k] = css[k].slice(-1).pop();
       }
     } else if (isPlainObject(css[k])) {
-      ob[p + k] = filterCssObject(css[k], p);
+      if (k[0] === "&") {
+        ob[k] = filterCssObject(css[k], p);
+      } else {
+        ob[p + k] = filterCssObject(css[k], p);
+      }
     } else {
       ob[k] = css[k];
     }
