@@ -2,11 +2,11 @@ const vscode = require("vscode");
 const postcss = require("postcss");
 const postcssJs = require("postcss-js");
 const autoprefixer = require("autoprefixer");
+const { filterCssObject } = require("./utils");
 
 const prefixer = postcssJs.sync([
   autoprefixer({ browsers: "last 4 versions, > 1%" }),
 ]);
-const isArray = (v) => Object.prototype.toString.call(v) === "[object Array]";
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -27,22 +27,12 @@ function activate(context) {
           const root = postcss.parse(code);
           css = postcssJs.objectify(root);
           css = prefixer(css);
+          css = filterCssObject(css, "& ");
 
-          //validate data if multiple value in array
-          for (let k in css) {
-            if (isArray(css[k])) {
-              if (css[k].length) {
-                css[k] = css[k].slice(-1).pop();
-              } else {
-                delete css[k];
-              }
-            }
-          }
-
-          // remove extra {}
+          // remove extra {} and quotes
           css = JSON.stringify(css, null, 2)
             .slice(1, -1)
-            .replace(/"([^"]+)":/g, "$1:");
+            .replace(/"([^"!(.|,|:)]+)":/g, "$1:");
 
           // remove extra lines
           let lines = css.split("\n");

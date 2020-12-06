@@ -3,15 +3,19 @@
 	"displayName": "CSS JS Prefixer",
 	"description": "Extension to convert css into js with browser compatibility",
 	"version": "0.0.1",
+	"icon": "image/icon.png",
 	"engines": {
 		"vscode": "^1.51.0"
 	},
 	"categories": [
-		"Other"
+		"Other",
+		"Programming Languages"
 	],
 	"activationEvents": [
 		"onCommand:css-js-prefixer.css-js-prefixer"
 	],
+	"publisher": "bcrazydreamer",
+	"repository": "https://github.com/bcrazydreamer/css-js-prefixer",
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
