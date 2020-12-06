@@ -12,16 +12,18 @@ function activate(context) {
     "css-js-prefixer.css-js-prefixer",
     function () {
       const settings = vscode.workspace.getConfiguration("css-js-prefixer");
-      let options = {};
+      const options = settings?.options || {};
+
+      let autoprefixer_options = {};
       try {
-        options = settings?.options?.browsers || {
+        autoprefixer_options = options?.browsers || {
           browsers: "last 4 versions, > 1%",
         };
       } catch (error) {
         console.log(error);
       }
 
-      const prefixer = postcssJs.sync([autoprefixer(options)]);
+      const prefixer = postcssJs.sync([autoprefixer(autoprefixer_options)]);
       const editor = vscode.window.activeTextEditor;
 
       if (editor) {
@@ -34,7 +36,7 @@ function activate(context) {
           const root = postcss.parse(code);
           css = postcssJs.objectify(root);
           css = prefixer(css);
-          css = filterCssObject(css, "& ");
+          css = filterCssObject(css, options);
 
           // remove extra {} and quotes
           css = JSON.stringify(css, null, 2)

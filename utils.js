@@ -2,7 +2,7 @@ const isArray = (v) => Object.prototype.toString.call(v) === "[object Array]";
 const isPlainObject = (v) =>
   Object.prototype.toString.call(v) === "[object Object]";
 
-const filterCssObject = (css, p = "") => {
+const filterCssObject = (css, options) => {
   const ob = {};
   for (let k in css) {
     if (isArray(css[k])) {
@@ -11,9 +11,10 @@ const filterCssObject = (css, p = "") => {
       }
     } else if (isPlainObject(css[k])) {
       if (k[0] === "&") {
-        ob[k] = filterCssObject(css[k], p);
+        ob[k] = filterCssObject(css[k], options);
       } else {
-        ob[p + k] = filterCssObject(css[k], p);
+        const sp = "&" + (k[0] === "." ? " " : "");
+        ob[sp + k] = filterCssObject(css[k], options);
       }
     } else {
       ob[k] = css[k];
