@@ -4,10 +4,6 @@ const postcssJs = require("postcss-js");
 const autoprefixer = require("autoprefixer");
 const { filterCssObject } = require("./utils");
 
-const prefixer = postcssJs.sync([
-  autoprefixer({ browsers: "last 4 versions, > 1%" }),
-]);
-
 /**
  * @param {vscode.ExtensionContext} context
  */
@@ -15,6 +11,17 @@ function activate(context) {
   let disposable = vscode.commands.registerCommand(
     "css-js-prefixer.css-js-prefixer",
     function () {
+      const settings = vscode.workspace.getConfiguration("css-js-prefixer");
+      let options = {};
+      try {
+        options = settings?.options?.browsers || {
+          browsers: "last 4 versions, > 1%",
+        };
+      } catch (error) {
+        console.log(error);
+      }
+
+      const prefixer = postcssJs.sync([autoprefixer(options)]);
       const editor = vscode.window.activeTextEditor;
 
       if (editor) {
@@ -36,7 +43,6 @@ function activate(context) {
 
           // remove extra lines
           let lines = css.split("\n");
-          console.log(lines.slice(1, -1));
           css = lines.slice(1, -1).join("\n");
         } catch (error) {
           console.log(error);

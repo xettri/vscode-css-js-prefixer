@@ -1,8 +1,9 @@
 # css-js-prefixer
 
-Detail description coming soon  
+Detail description coming soon
 
 ## Features
+
 Install:
 
 Press F1 and select Extensions: Install Extensions.
