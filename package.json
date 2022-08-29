@@ -23,9 +23,9 @@
 	],
 	"publisher": "bcrazydreamer",
 	"repository": {
-    "type": "git",
-    "url": "https://github.com/bcrazydreamer/vscode-css-js-prefixer.git"
-  },
+		"type": "git",
+		"url": "https://github.com/bcrazydreamer/vscode-css-js-prefixer.git"
+	},
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
@@ -84,6 +84,7 @@
 		"eslint-config-prettier": "^8.5.0",
 		"glob": "^7.2.3",
 		"husky": "^8.0.1",
+		"lint-staged": "^13.0.3",
 		"mocha": "^8.4.0",
 		"prettier": "^2.7.1",
 		"vscode-test": "^1.6.1"
