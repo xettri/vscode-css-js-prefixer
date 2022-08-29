@@ -1,51 +1,96 @@
 {
-  "name": "css-js-prefixer",
-  "displayName": "CSS JS Prefixer",
-  "description": "Extension to convert css into js with browser compatibility",
-  "version": "0.0.1",
-  "icon": "image/icon.png",
-  "engines": {
-    "vscode": "^1.51.0"
+	"name": "css-js-prefixer",
+	"displayName": "CSS JS Prefixer",
+	"description": "Extension to convert css into js with browser compatibility",
+	"version": "0.0.1",
+	"icon": "image/icon.png",
+	"license": "MIT",
+	"engines": {
+		"vscode": "^1.51.0"
+	},
+	"keywords": [
+		"formatters",
+		"css",
+		"scss",
+		"css-in-js"
+	],
+	"categories": [
+		"Other",
+		"Formatters"
+	],
+	"activationEvents": [
+		"onCommand:cssJsPrefixer.execute"
+	],
+	"publisher": "bcrazydreamer",
+	"repository": {
+    "type": "git",
+    "url": "https://github.com/bcrazydreamer/vscode-css-js-prefixer.git"
   },
-  "categories": [
-    "Other",
-    "Programming Languages"
-  ],
-  "activationEvents": [
-    "onCommand:css-js-prefixer.css-js-prefixer"
-  ],
-  "publisher": "bcrazydreamer",
-  "repository": "https://github.com/bcrazydreamer/css-js-prefixer",
-  "main": "./extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "css-js-prefixer.css-js-prefixer",
-        "title": "CSS JS Prefixer"
-      }
-    ]
-  },
-  "scripts": {
-    "lint": "eslint .",
-    "pretest": "npm run lint",
-    "test": "node ./test/runTest.js",
-    "package": "vsce package"
-  },
-  "devDependencies": {
-    "@types/glob": "^7.1.3",
-    "@types/mocha": "^8.0.0",
-    "@types/node": "^12.11.7",
-    "@types/vscode": "^1.51.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.9.0",
-    "glob": "^7.1.6",
-    "mocha": "^8.1.3",
-    "typescript": "^4.0.2",
-    "vscode-test": "^1.4.0"
-  },
-  "dependencies": {
-    "autoprefixer": "^10.0.4",
-    "postcss": "^8.1.14",
-    "postcss-js": "^3.0.3"
-  }
+	"main": "./dist/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "cssJsPrefixer.execute",
+				"title": "CSS Js Prefixer"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "cssJsPrefixer.execute",
+				"key": "alt+F alt+P",
+				"when": "editorTextFocus",
+				"mac": "cmd+F cmd+P"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "CSS Js Prefixer configuration options",
+			"properties": {
+				"cssJsPrefixer.options": {
+					"type": "object",
+					"default": {},
+					"description": "Any options supported by autoprefixer"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"test": "rm -rf .vscode-test/user-data && node ./test/runTest.js",
+		"lint": "eslint ./src",
+		"pretest": "yarn lint",
+		"prettier": "prettier --write **/*.js",
+		"package": "vsce package",
+		"postinstall": "husky install",
+		"build": "yarn build-base -- --minify --sourcemap",
+		"build-base": "esbuild ./src/extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node"
+	},
+	"lint-staged": {
+		"**/*.js": [
+			"prettier --write"
+		],
+		"src/**/*.js": [
+			"eslint --quiet"
+		]
+	},
+	"devDependencies": {
+		"@types/glob": "^7.2.0",
+		"@types/mocha": "^8.2.3",
+		"@types/node": "^12.20.55",
+		"@types/vscode": "^1.70.0",
+		"@vscode/test-electron": "^2.1.5",
+		"babel-eslint": "^10.1.0",
+		"esbuild": "^0.15.5",
+		"eslint": "^7.32.0",
+		"eslint-config-prettier": "^8.5.0",
+		"glob": "^7.2.3",
+		"husky": "^8.0.1",
+		"mocha": "^8.4.0",
+		"prettier": "^2.7.1",
+		"vscode-test": "^1.6.1"
+	},
+	"dependencies": {
+		"autoprefixer": "^10.4.8",
+		"postcss": "^8.4.16",
+		"postcss-js": "^3.0.3"
+	}
 }
