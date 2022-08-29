@@ -26,6 +26,7 @@
 		"type": "git",
 		"url": "https://github.com/bcrazydreamer/vscode-css-js-prefixer.git"
 	},
+	"homepage": "https://github.com/bcrazydreamer/vscode-css-js-prefixer/blob/master/README.md",
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
