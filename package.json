@@ -2,7 +2,7 @@
 	"name": "css-js-prefixer",
 	"displayName": "CSS JS Prefixer",
 	"description": "Extension to convert css into js with browser compatibility",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"icon": "image/icon.png",
 	"license": "MIT",
 	"engines": {
