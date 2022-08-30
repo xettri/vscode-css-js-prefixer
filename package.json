@@ -2,7 +2,7 @@
 	"name": "css-js-prefixer",
 	"displayName": "CSS JS Prefixer",
 	"description": "Extension to convert css into js with browser compatibility",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"icon": "image/icon.png",
 	"license": "MIT",
 	"engines": {
@@ -38,9 +38,9 @@
 		"keybindings": [
 			{
 				"command": "cssJsPrefixer.execute",
-				"key": "alt+F alt+P",
+				"key": "ctrl+shift+K",
 				"when": "editorTextFocus",
-				"mac": "cmd+F cmd+P"
+				"mac": "ctrl+shift+K"
 			}
 		],
 		"configuration": {
@@ -61,6 +61,7 @@
 		"pretest": "yarn lint",
 		"prettier": "prettier --write **/*.js",
 		"package": "vsce package",
+		"vscode:prepublish": "yarn lint && yarn build",
 		"postinstall": "husky install",
 		"build": "yarn build-base -- --minify --sourcemap",
 		"build-base": "esbuild ./src/extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node"

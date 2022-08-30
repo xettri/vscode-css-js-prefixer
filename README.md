@@ -48,8 +48,7 @@ Extension key for custom settings is ```cssJsPrefixer.options```
 }
 ```
 ## Keyboard shortcuts
-Default Keyboard shortcuts
-for **mac** ```cmd+F cmd+P``` and for **other** ```alt+F alt+P```
+Default Keyboard shortcuts ```ctrl+shift+K```
 
 to overwrite use command name ```autoprefixer.execute```
 
