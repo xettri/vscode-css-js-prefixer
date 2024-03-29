@@ -1,3 +1,4 @@
+'use strict';
 const path = require('path');
 const Mocha = require('mocha');
 const glob = require('glob');

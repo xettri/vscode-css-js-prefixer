@@ -1,9 +1,9 @@
+// @ts-nocheck
 const vscode = require("vscode");
 const assert = require("assert");
 const { after } = require("mocha");
-// @ts-ignore
-const { name, publisher } = require("../../package.json");
 const converter = require("../../src/converter");
+const { name, publisher } = require("../../package.json");
 
 const extName = `${publisher}.${name}`;
 
@@ -43,8 +43,8 @@ suite("Extension Test Suite", () => {
     assert.ok(vscode.extensions.getExtension(extName));
   });
 
-  test("should activate", function () {
-    return vscode.extensions
+  test("should activate", async function () {
+    await vscode.extensions
       .getExtension(extName)
       .activate()
       .then(() => assert.ok(true));
@@ -60,12 +60,17 @@ suite("Extension Test Suite", () => {
       display: grid;
       color: red;
       background-color: red;
+      flex: 1;
     `;
 
     const expOp = `
       "display": "grid",
       "color": "red",
       "backgroundColor": "red",
+      "WebkitFlex": "1",
+      "MozBoxFlex": "1",
+      "msFlex": "1",
+      "flex": 1
     `;
 
     const resp = await converter(input);
@@ -79,11 +84,32 @@ suite("Extension Test Suite", () => {
     `;
 
     const expOp = `
+      "WebkitUserSelect": "none",
+      "MozUserSelect": "none",
+      "msUserSelect": "none",
       "userSelect": "none",
+      "WebkitTransition": "all .5s",
       "transition": "all .5s"
     `;
 
     const resp = await converter(input);
     assert.ok(matchOutput(resp, expOp));
+  });
+
+  test("Test invalid css string", async () => {    
+    const input = `
+      user-select: none;
+      transition: all .5s;
+      random-string
+    `;
+
+    await converter(input).then(() => {
+      assert.ok(false);
+    }).catch((error) => {
+      const {name, reason, line}= error;
+      if(name === 'CssSyntaxError' && reason === "Unknown word" && line === 4) {
+        assert.ok(true)
+      }
+    })
   });
 });

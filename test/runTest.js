@@ -1,43 +1,39 @@
-const fs = require("fs");
-const path = require("path");
-const { runTests } = require("@vscode/test-electron");
-
-async function createSettingFile() {
-  try {
-    const folder = "test/.vscode";
-    if (!fs.existsSync(folder)) {
-      fs.mkdirSync(folder);
-    }
-    const config = {
-      "cssJsPrefixer.options": {
-        browsers: [],
-      },
-    };
-    fs.writeFileSync(
-      `${folder}/settings.json`,
-      JSON.stringify(config, undefined, 2)
-    );
-  } catch (error) {
-    console.log(error);
-  }
-}
+const path = require('path');
+const { runTests } = require('@vscode/test-electron');
+const {
+  createSettingFile,
+  setupUserDataDir,
+  removeTempDataDir,
+} = require('./utils');
 
 async function main() {
   try {
-    await createSettingFile();
+    const tempDataDir = await setupUserDataDir();
+    createSettingFile({ browsers: ['chrome > 20', 'ie >= 9', 'Firefox > 20'] });
+
     // The folder containing the Extension Manifest package.json
     // Passed to `--extensionDevelopmentPath`
-    const extensionDevelopmentPath = path.resolve(__dirname, "../");
+    const extensionDevelopmentPath = path.resolve(__dirname, '../');
 
     // The path to the extension test script
     // Passed to --extensionTestsPath
-    const extensionTestsPath = path.resolve(__dirname, "./suite/index");
+    const extensionTestsPath = path.resolve(__dirname, './suite/index.js');
 
     // Download VS Code, unzip it and run the integration test
-    await runTests({ extensionDevelopmentPath, extensionTestsPath, launchArgs: ['--disable-extensions'] });
+    await runTests({
+      extensionDevelopmentPath,
+      extensionTestsPath,
+      launchArgs: [
+        '--disable-extensions',
+        '--enable-proposed-api',
+        `--user-data-dir=${tempDataDir}`,
+      ],
+    });
   } catch (err) {
-    console.error("Failed to run tests");
+    console.error('Failed to run tests');
     process.exit(1);
+  } finally {
+    removeTempDataDir();
   }
 }
 

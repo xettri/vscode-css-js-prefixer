@@ -1,3 +1,4 @@
+'use strict';
 const vscode = require('vscode');
 const postcss = require('postcss');
 const postcssJs = require('postcss-js');
@@ -17,7 +18,17 @@ function converter(code) {
       ...options,
     };
 
-    const prefixer = postcssJs.sync([autoprefixer(autoprefixerOptions)]);
+    let autoprefixerConfig;
+    if (autoprefixerOptions.options) {
+      autoprefixerConfig = autoprefixer(
+        autoprefixerOptions.browsers,
+        autoprefixerOptions.options
+      );
+    } else {
+      autoprefixerConfig = autoprefixer(autoprefixerOptions);
+    }
+
+    const prefixer = postcssJs.sync([autoprefixerConfig]);
     try {
       const root = postcss.parse(code);
       const postCssObject = postcssJs.objectify(root);

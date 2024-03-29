@@ -11,6 +11,7 @@
       "request": "launch",
       "args": [
         "--disable-extensions",
+        "--enable-proposed-api",
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],
       "outFiles": ["${workspaceFolder}/dist/**/*.js"],
@@ -22,6 +23,7 @@
       "request": "launch",
       "args": [
         "--disable-extensions",
+        "--enable-proposed-api",
         "--extensionDevelopmentPath=${workspaceFolder}",
         "--extensionTestsPath=${workspaceFolder}/test/suite/index"
       ]

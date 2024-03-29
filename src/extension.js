@@ -1,3 +1,4 @@
+'use strict';
 const vscode = require('vscode');
 const converter = require('./converter');
 

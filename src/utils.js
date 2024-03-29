@@ -1,4 +1,8 @@
-const isArray = (v) => Object.prototype.toString.call(v) === '[object Array]';
+'use strict';
+/**
+ * @param {Object} obj
+ * @returns {boolean}
+ */
 const isPlainObject = (obj) => {
   if (!obj) return false;
   const proto = Object.getPrototypeOf(obj);
@@ -9,10 +13,14 @@ const isPlainObject = (obj) => {
   );
 };
 
+/**
+ * @param {import('postcss-js').CssInJs} css
+ * @returns {Object}
+ */
 const filterCssObject = (css) => {
   const ob = {};
   for (let k in css) {
-    if (isArray(css[k])) {
+    if (Array.isArray(css[k])) {
       if (css[k].length) {
         ob[k] = css[k].slice(-1).pop();
       }
